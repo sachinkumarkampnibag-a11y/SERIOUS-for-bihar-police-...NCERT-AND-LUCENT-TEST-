@@ -8,44 +8,108 @@
 body{font-family:Arial;margin:0;background:#f2f2f2;text-align:center}
 header{background:#0d47a1;color:white;padding:20px;font-size:22px;font-weight:bold}
 .box{background:white;margin:15px;padding:20px;border-radius:12px;box-shadow:0 2px 8px #ccc}
-.btn{display:block;margin:12px auto;padding:15px;background:#ff6f00;color:white;text-decoration:none;border-radius:8px;font-size:18px;font-weight:bold;width:85%;border:none}
+.btn{display:block;margin:12px auto;padding:15px;background:#ff6f00;color:white;text-decoration:none;border-radius:8px;font-size:18px;font-weight:bold;width:85%;border:none;cursor:pointer}
 .green{background:#2e7d32}
 .blue{background:#1565c0}
-input{padding:12px;width:80%;font-size:16px;border:1px solid #ccc;border-radius:8px}
-#paidSection{display:none}
+.red{background:#c62828}
+input{padding:12px;width:85%;font-size:16px;border:1px solid #ccc;border-radius:8px;margin:8px 0;box-sizing:border-box}
+#mainSection, #paidSection{display:none}
+.link{color:#1565c0;font-weight:bold;cursor:pointer}
 </style>
 </head>
 <body>
 
 <header>SERIOUS FOR BIHAR POLICE<br><small>NCERT + LUCENT TEST SERIES</small></header>
 
-<div class="box">
-<h2>FREE DEMO TEST</h2>
-<a class="btn blue" href="#">START FREE TEST</a>
+<div class="box" id="authSection">
+  <div id="signupBox">
+    <h2>STUDENT SIGN UP</h2>
+    <input type="text" id="sName" placeholder="Apna Pura Naam likho">
+    <input type="tel" id="sMobile" placeholder="Mobile Number (10 digit)">
+    <input type="password" id="sPass" placeholder="Apna Password banao">
+    <button class="btn green" onclick="signup()">SIGN UP KARO</button>
+    <p>Pehle se account hai? <span class="link" onclick="showLogin()">Login Karo</span></p>
+  </div>
+
+  <div id="loginBox" style="display:none">
+    <h2>STUDENT LOGIN</h2>
+    <input type="tel" id="lMobile" placeholder="Mobile Number dalo">
+    <input type="password" id="lPass" placeholder="Password dalo">
+    <button class="btn blue" onclick="login()">LOGIN KARO</button>
+    <p>Account nahi hai? <span class="link" onclick="showSignup()">Sign Up Karo</span></p>
+  </div>
 </div>
 
-<div class="box">
-<h2>FULL TEST SERIES - 50 TESTS</h2>
-<p>Sirf ₹41 me sab Paid Test unlock karo</p>
-<a class="btn green" href="upi://pay?pa=8825295364-2@axl&pn=SERIOUS%20FOR%20BIHAR%20POLICE&am=41&cu=INR&tn=BiharPoliceFullTestSeries">₹41 PAY KARO - PhonePe / GPay</a>
-<a class="btn" href="https://wa.me/918825295364?text=Namaste%20Sir,%20maine%20₹41%20payment%20kar%20diya%20hai.%20Please%20password%20bhej%20dijiye.">Payment ke baad Screenshot WhatsApp par Bhejo</a>
-</div>
+<div id="mainSection">
+  <div class="box">
+    <h3 id="welcome"></h3>
+    <button class="btn red" onclick="logout()">LOGOUT</button>
+  </div>
 
-<div class="box">
-<h2>PAID TEST UNLOCK KARO</h2>
-<p>Sir se mila password yahan dalo</p>
-<input type="password" id="pass" placeholder="Password dalo">
-<button class="btn green" onclick="unlock()">UNLOCK TEST</button>
-</div>
+  <div class="box">
+    <h2>FREE DEMO TEST</h2>
+    <a class="btn blue" href="#">START FREE TEST</a>
+  </div>
 
-<div class="box" id="paidSection">
-<h2>PAID TESTS KHUL GAYE</h2>
-<a class="btn blue" href="#">Paid Test 1 - Start Karo</a>
-<a class="btn blue" href="#">Paid Test 2 - Start Karo</a>
-<a class="btn blue" href="#">Paid Test 3 - Start Karo</a>
+  <div class="box">
+    <h2>FULL TEST SERIES - 50 TESTS</h2>
+    <p>Sirf ₹41 me sab Paid Test unlock karo</p>
+    <a class="btn green" href="upi://pay?pa=8825295364-2@axl&pn=SERIOUS%20FOR%20BIHAR%20POLICE&am=41&cu=INR&tn=BiharPoliceFullTestSeries">₹41 PAY KARO - PhonePe / GPay</a>
+    <a class="btn" href="https://wa.me/918825295364?text=Namaste%20Sir,%20maine%20₹41%20payment%20kar%20diya%20hai.%20Please%20password%20bhej%20dijiye.">Payment ke baad Screenshot WhatsApp par Bhejo</a>
+  </div>
+
+  <div class="box">
+    <h2>PAID TEST UNLOCK KARO</h2>
+    <p>Sir se mila password yahan dalo</p>
+    <input type="password" id="pass" placeholder="Password dalo">
+    <button class="btn green" onclick="unlock()">UNLOCK TEST</button>
+  </div>
+
+  <div class="box" id="paidSection">
+    <h2>PAID TESTS KHUL GAYE</h2>
+    <a class="btn blue" href="#">Paid Test 1 - Start Karo</a>
+    <a class="btn blue" href="#">Paid Test 2 - Start Karo</a>
+    <a class="btn blue" href="#">Paid Test 3 - Start Karo</a>
+  </div>
 </div>
 
 <script>
+function showLogin(){ document.getElementById("signupBox").style.display="none"; document.getElementById("loginBox").style.display="block"; }
+function showSignup(){ document.getElementById("loginBox").style.display="none"; document.getElementById("signupBox").style.display="block"; }
+
+function signup(){
+  var name = document.getElementById("sName").value;
+  var mobile = document.getElementById("sMobile").value;
+  var pass = document.getElementById("sPass").value;
+  if(name=="" || mobile.length!=10 || pass==""){ alert("Sahi Naam, 10 digit Mobile aur Password dalo"); return; }
+  var user = {name:name, mobile:mobile, pass:pass};
+  localStorage.setItem("user_"+mobile, JSON.stringify(user));
+  alert("Sign Up ho gaya! Ab Login karo");
+  showLogin();
+}
+
+function login(){
+  var mobile = document.getElementById("lMobile").value;
+  var pass = document.getElementById("lPass").value;
+  var data = localStorage.getItem("user_"+mobile);
+  if(!data){ alert("Ye mobile number se account nahi hai, pehle Sign Up karo"); return; }
+  var user = JSON.parse(data);
+  if(user.pass != pass){ alert("Galat Password hai"); return; }
+  localStorage.setItem("loggedIn", mobile);
+  openMain(user.name);
+}
+
+function openMain(name){
+  document.getElementById("authSection").style.display="none";
+  document.getElementById("mainSection").style.display="block";
+  document.getElementById("welcome").innerText = "Welcome, " + name;
+}
+
+function logout(){
+  localStorage.removeItem("loggedIn");
+  location.reload();
+}
+
 function unlock(){
   var p = document.getElementById("pass").value;
   if(p == "BIHAR41"){
@@ -53,6 +117,14 @@ function unlock(){
     alert("Sahi Password! Paid Test khul gaye");
   } else {
     alert("Galat Password hai");
+  }
+}
+
+window.onload = function(){
+  var mobile = localStorage.getItem("loggedIn");
+  if(mobile){
+    var data = localStorage.getItem("user_"+mobile);
+    if(data){ openMain(JSON.parse(data).name); }
   }
 }
 </script>
